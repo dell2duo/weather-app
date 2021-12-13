@@ -2,9 +2,9 @@ import React from 'react'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-
-import { Home } from './pages/Home/Provider'
-// import { HomeView } from './pages/Home/View'
+// import { HomeView as Home } from './pages/Home/View'
+import { DetailsView as Details } from './pages/Details/View'
+import Home from './pages/Home'
 
 const Stack = createNativeStackNavigator()
 
@@ -13,12 +13,18 @@ const routes = [
     name: 'home',
     component: Home,
   },
+  {
+    name: 'details',
+    component: Details,
+  },
 ]
 
 const Routes: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false, statusBarHidden: true }}
+      >
         {routes.map((route) => {
           return (
             <Stack.Screen
