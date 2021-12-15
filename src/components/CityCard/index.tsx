@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTheme } from 'styled-components'
+import { useTheme } from 'styled-components/native'
 import { City } from '../../domain/models/City'
 import Text from '../Text'
 import { Plus } from 'react-native-feather'

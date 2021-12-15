@@ -24,6 +24,7 @@ export default {
     placeholder: '#6C6C6C',
     favorite: '#FF2020',
     unfavorite: '#AAAAAA',
+    feelsLike: '#AF7E00',
   },
   borderRadius: {
     none: 0,
@@ -44,6 +45,7 @@ export default {
     weatherCard: 24,
     country: 14,
     description: 14,
+    header: 36,
     degrees: 48,
   },
 }

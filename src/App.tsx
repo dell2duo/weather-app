@@ -21,6 +21,10 @@ import {
   Nunito_900Black,
   Nunito_900Black_Italic,
 } from '@expo-google-fonts/nunito'
+import {
+  UserConfigContext,
+  UserConfigProvider,
+} from './context/UserConfigContext'
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -45,10 +49,12 @@ export default function App() {
   }
 
   return (
-    <StoreProvider>
-      <ThemeProvider theme={dark}>
-        <Routes />
-      </ThemeProvider>
-    </StoreProvider>
+    <UserConfigProvider>
+      <StoreProvider>
+        <ThemeProvider theme={dark}>
+          <Routes />
+        </ThemeProvider>
+      </StoreProvider>
+    </UserConfigProvider>
   )
 }

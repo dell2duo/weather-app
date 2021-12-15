@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { Search, X } from 'react-native-feather'
 import { useTheme } from 'styled-components/native'
 

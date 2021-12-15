@@ -5,10 +5,24 @@ import { Exports, useStore } from '../domain/implementations/Store'
 const WeatherContext = createContext<Exports | undefined>(undefined)
 
 const StoreProvider: React.FC<ReactNode> = ({ children }) => {
-  const { favoriteCity, getCities, removeCity, saveCity, cities } = useStore()
+  const {
+    favoriteCity,
+    getCities,
+    removeCity,
+    saveCity,
+    cities,
+    loadingStorage,
+  } = useStore()
   return (
     <WeatherContext.Provider
-      value={{ favoriteCity, getCities, removeCity, saveCity, cities }}
+      value={{
+        favoriteCity,
+        getCities,
+        removeCity,
+        saveCity,
+        cities,
+        loadingStorage,
+      }}
     >
       {children}
     </WeatherContext.Provider>

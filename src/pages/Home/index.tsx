@@ -1,44 +1,71 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useNavigation } from '@react-navigation/core'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import Toast from 'react-native-toast-message'
 import { View } from 'react-native'
 import CitySearch from '../../components/CitySearch'
 import ListCities from '../../components/ListCities'
 import ListCitiesWeather from '../../components/ListCitiesWeather'
+import { UserConfigContext } from '../../context/UserConfigContext'
 import { WeatherContext } from '../../context/WeatherContext'
 import { City } from '../../domain/models/City'
 import { CityWeather } from '../../domain/models/CityWeather'
 import { SearchCitiesService } from '../../services/SearchCitiesService'
 import { SearchWeatherService } from '../../services/SearchWeatherService'
+import { RootStackParamList } from '../../types/RootStackParamList'
 
 import { Container } from './styles'
 
+type homeScreenProp = NativeStackNavigationProp<RootStackParamList, 'Home'>
+
 const Home: React.FC = () => {
+  const navigation = useNavigation<homeScreenProp>()
+  const { unitSystem, changeUnitSystem } = useContext(UserConfigContext)
   const {
     cities,
     favoriteCity: updateFavorite,
     getCities,
-    removeCity,
     saveCity,
-  } = useContext(WeatherContext)!
+  } = useContext(WeatherContext)
   const cityWeatherService = new SearchWeatherService()
   const searchCitiesService = new SearchCitiesService()
   const [search, setSearch] = useState<string>('')
   const [searchResultCities, setSearchResultCities] = useState<City[]>([])
   const [citiesWeather, setCitiesWeather] = useState<CityWeather[]>([])
+  const [switchValue, setSwitchValue] = useState<boolean>(
+    unitSystem === 'metric',
+  )
+
+  const start = useCallback(async (citiesArr: City[]): Promise<void> => {
+    const citiesWeatherArr = await parseCityArrToCityWeatherArr(citiesArr)
+    setCitiesWeather(citiesWeatherArr)
+  }, [])
 
   useEffect(() => {
-    const init = async () => {
-      const savedCities = (await getCities()) || ([] as City[])
-      const parsedCities = await parseCityArrToCityWeatherArr(savedCities)
-      setCitiesWeather(parsedCities)
-    }
-    init()
-  }, [])
+    cityWeatherService.unitSystem = unitSystem
+    start(cities)
+  }, [start])
 
   useEffect(() => {
     if (search.length === 0) {
       setSearchResultCities([])
     }
   }, [search])
+
+  useEffect(() => {
+    getCities()
+  }, [cities])
+
+  const updateUnitSystem = () => {
+    cityWeatherService.unitSystem = switchValue ? 'imperial' : 'metric'
+    changeUnitSystem(switchValue ? 'imperial' : 'metric')
+    getCities().then((savedCities) => {
+      parseCityArrToCityWeatherArr(savedCities).then((parsedCities) => {
+        setCitiesWeather(parsedCities)
+      })
+    })
+    setSwitchValue(!switchValue)
+  }
 
   const addCity = async (city: City): Promise<void> => {
     if (citiesWeather.find((c) => c.name === city.name)) {
@@ -78,11 +105,15 @@ const Home: React.FC = () => {
   }
 
   const searchCities = async (search: string): Promise<void> => {
-    var cities = await searchCitiesService.search(search)
-    cities = cities.filter(
+    var foundCities = await searchCitiesService.search(search)
+    foundCities = foundCities.filter(
       (city) => !citiesWeather.find((c) => c.id.toString() === city.id),
     )
-    setSearchResultCities(cities)
+    if (foundCities.length === 0) {
+      setSearch('Cidade não encontrada')
+      return
+    }
+    setSearchResultCities(foundCities)
   }
 
   return (
@@ -96,7 +127,13 @@ const Home: React.FC = () => {
       {search ? (
         <ListCities cities={searchResultCities} onClick={addCity} />
       ) : (
-        <ListCitiesWeather cities={citiesWeather} favoriteCity={favoriteCity} />
+        <ListCitiesWeather
+          cities={citiesWeather}
+          favoriteCity={favoriteCity}
+          onPress={navigation.navigate}
+          switchValue={switchValue}
+          setSwitchValue={() => updateUnitSystem()}
+        />
       )}
     </Container>
   )

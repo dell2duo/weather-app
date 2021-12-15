@@ -20,7 +20,7 @@ type Sys = {
   sunset: number
 }
 
-class CityWeatherApiModel {
+export class CityWeatherApiModel {
   public id: number
   public name: string
   public main: Main

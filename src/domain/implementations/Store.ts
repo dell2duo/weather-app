@@ -14,17 +14,20 @@ export type Exports = {
   saveCity: (city: City) => Promise<void>
   favoriteCity: (city: City) => Promise<void>
   cities: City[]
+  loadingStorage: boolean
 }
 
 export const useStore = (): Exports => {
   const [cities, setCities] = React.useState<City[]>([])
+  const [loadingStorage, setLoadingStorage] = React.useState<boolean>(true)
 
   useEffect(() => {
-    cleanMemory()
+    // cleanMemory()
     AsyncStorage.getItem('@cities').then((cities) => {
       if (cities) {
         setCities(JSON.parse(cities))
       }
+      setLoadingStorage(false)
     })
   }, [])
 
@@ -50,7 +53,8 @@ export const useStore = (): Exports => {
     const newCities = cities.filter((c) => c.name !== city.name)
     setCities(newCities)
     try {
-      await AsyncStorage.setItem('cities', JSON.stringify(newCities))
+      await AsyncStorage.setItem('@cities', JSON.stringify(newCities))
+      await getCities()
     } catch (error) {
       throw new Error('Error removing city')
     }
@@ -99,5 +103,6 @@ export const useStore = (): Exports => {
     saveCity,
     favoriteCity,
     cities,
+    loadingStorage,
   }
 }

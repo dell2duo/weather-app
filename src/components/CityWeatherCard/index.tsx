@@ -1,22 +1,29 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { TouchableOpacity } from 'react-native'
-import { useTheme } from 'styled-components'
+import { useTheme } from 'styled-components/native'
 import { CityWeather } from '../../domain/models/CityWeather'
 import { Heart } from 'react-native-feather'
 import Text from '../Text'
 
 import { ColumnRight, ColumnLeft, Row } from './styles'
 import { Card } from '../CityCard/styles'
+import { WeatherContext } from '../../context/WeatherContext'
+import { City } from '../../domain/models/City'
 
 type Props = {
   city: CityWeather
   favoriteCity: Function
+  onPress: Function
 }
 
-const CityWeatherCard: React.FC<Props> = ({ city, favoriteCity }) => {
+const CityWeatherCard: React.FC<Props> = ({ city, favoriteCity, onPress }) => {
   const theme = useTheme()
+  const { removeCity } = useContext(WeatherContext)
   return (
-    <Card activeOpacity={0.8}>
+    <Card
+      activeOpacity={0.8}
+      onPress={() => onPress('Details', { cityWeather: city })}
+    >
       <ColumnLeft>
         <Row>
           <Text
@@ -61,6 +68,7 @@ const CityWeatherCard: React.FC<Props> = ({ city, favoriteCity }) => {
             font={theme.fonts.light300}
             fontSize={theme.fontSizes.degrees}
             color={theme.colors.primary}
+            lineHeight={56}
           >
             {Math.round(city.temperature)}º
           </Text>

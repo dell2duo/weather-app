@@ -1,39 +1,45 @@
-import React from 'react'
-
+import React, { useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-// import { HomeView as Home } from './pages/Home/View'
-import { DetailsView as Details } from './pages/Details/View'
+import { Details } from './pages/Details'
 import Home from './pages/Home'
+import { CityWeather } from './domain/models/CityWeather'
+import { WeatherContext } from './context/WeatherContext'
+import AppLoading from 'expo-app-loading'
 
 const Stack = createNativeStackNavigator()
 
 const routes = [
   {
-    name: 'home',
+    name: 'Home',
     component: Home,
   },
   {
-    name: 'details',
+    name: 'Details',
     component: Details,
   },
 ]
 
 const Routes: React.FC = () => {
+  const { loadingStorage } = useContext(WeatherContext)
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{ headerShown: false, statusBarHidden: true }}
       >
-        {routes.map((route) => {
-          return (
-            <Stack.Screen
-              key={route.name}
-              name={route.name}
-              component={route.component}
-            />
-          )
-        })}
+        {!loadingStorage ? (
+          routes.map((route) => {
+            return (
+              <Stack.Screen
+                key={route.name}
+                name={route.name}
+                component={route.component}
+              />
+            )
+          })
+        ) : (
+          <Stack.Screen name="Loading" component={AppLoading} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   )

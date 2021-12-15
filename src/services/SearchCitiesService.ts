@@ -12,7 +12,7 @@ export class SearchCitiesService implements ISearchCitiesService {
       params: { limit: '10', skip: '0', q: city, type: 'CITY' },
       headers: {
         'x-rapidapi-host': 'spott.p.rapidapi.com',
-        'x-rapidapi-key': keys.SPOTT_CITIES_API_KEY,
+        'x-rapidapi-key': keys.RAPIDAPI_SPOTT_API_KEY,
       },
     }
 

@@ -16,6 +16,7 @@ declare module 'styled-components/native' {
       placeholder: string
       favorite: string
       unfavorite: string
+      feelsLike: string
     }
     spacing: {
       none: number
@@ -47,6 +48,7 @@ declare module 'styled-components/native' {
       weatherCard: number
       country: number
       description: number
+      header: number
       degrees: number
     }
   }

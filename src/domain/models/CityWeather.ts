@@ -1,3 +1,5 @@
+import { CityWeatherApiModel } from './CityWeatherApiModel'
+
 export class CityWeather {
   public id: number
   public name: string
