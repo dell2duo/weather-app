@@ -25,6 +25,17 @@ const ListCitiesWeather: React.FC<Props> = ({
   switchValue,
   setSwitchValue,
 }) => {
+  const orderedCitiesByFavorite = () =>
+    cities.sort((a, b) => {
+      if (a.favorite) {
+        return -1
+      }
+      if (!a.name) {
+        return 1
+      }
+      return 0
+    })
+
   return (
     <Container>
       {cities.length > 0 ? (
@@ -37,7 +48,7 @@ const ListCitiesWeather: React.FC<Props> = ({
             value={switchValue}
           />
           <FlatList
-            data={cities}
+            data={orderedCitiesByFavorite()}
             keyExtractor={(item) => item.name}
             renderItem={({ item }) => (
               <CityWeatherCard

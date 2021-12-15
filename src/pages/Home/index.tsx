@@ -1,8 +1,6 @@
 import { useNavigation } from '@react-navigation/core'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import Toast from 'react-native-toast-message'
-import { View } from 'react-native'
 import CitySearch from '../../components/CitySearch'
 import ListCities from '../../components/ListCities'
 import ListCitiesWeather from '../../components/ListCitiesWeather'

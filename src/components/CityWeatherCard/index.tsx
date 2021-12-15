@@ -10,6 +10,10 @@ import { Card } from '../CityCard/styles'
 import { WeatherContext } from '../../context/WeatherContext'
 import { City } from '../../domain/models/City'
 
+/**
+ * TODO: Add removeCity to the cards in some way
+ */
+
 type Props = {
   city: CityWeather
   favoriteCity: Function
