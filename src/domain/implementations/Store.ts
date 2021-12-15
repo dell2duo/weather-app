@@ -1,12 +1,8 @@
-import { Component, useEffect } from 'react'
-import { IStore } from '../interfaces/IStore'
+import { useEffect } from 'react'
 import { City } from '../models/City'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import React from 'react'
-import { View } from 'react-native'
-
-// import { Container } from './styles';
 
 export type Exports = {
   getCities: () => Promise<City[]>
@@ -22,7 +18,6 @@ export const useStore = (): Exports => {
   const [loadingStorage, setLoadingStorage] = React.useState<boolean>(true)
 
   useEffect(() => {
-    // cleanMemory()
     AsyncStorage.getItem('@cities').then((cities) => {
       if (cities) {
         setCities(JSON.parse(cities))
