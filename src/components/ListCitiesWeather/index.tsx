@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { FlatList, Switch } from 'react-native'
 import { CityWeather } from '../../domain/models/CityWeather'
 import CityWeatherCard from '../CityWeatherCard'
+import Text from '../Text'
 
 import { Container } from './styles'
 
@@ -12,6 +13,10 @@ type Props = {
   switchValue: boolean
   setSwitchValue: () => void
 }
+
+/**
+ * TODO: Remove hard-coded colors hexadecimal values
+ */
 
 const ListCitiesWeather: React.FC<Props> = ({
   cities,
@@ -43,7 +48,18 @@ const ListCitiesWeather: React.FC<Props> = ({
             )}
           />
         </Fragment>
-      ) : null}
+      ) : (
+        <Text fontSize={24}>
+          Parece que você ainda não tem cidades cadastradas 😢
+          {'\n'}
+          {'\n'}
+          Pesquise por uma cidade na barra superior e clique na lupa.
+          {'\n'}
+          {'\n'}
+          Você conseguirá adicionar uma nova cidade ao clicar em qualquer cidade
+          encontrada 😉
+        </Text>
+      )}
     </Container>
   )
 }
