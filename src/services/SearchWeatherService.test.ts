@@ -29,19 +29,11 @@ describe('[Integration test]\nTesting city weather service', () => {
     expect(response.favorite).toBe(true)
   })
 
-  it('should return the city forecast for the next 5 days', async () => {
+  it('should return the city forecast for the next 5 days with 40 objects', async () => {
     const service = new SearchWeatherService()
     const city = 'São Paulo'
 
-    const forecast = await service.getForecastForDays(city, 5)
-    expect(forecast.list).toHaveLength(5)
-  })
-
-  it('should return the city forecast for the next day', async () => {
-    const service = new SearchWeatherService()
-    const city = 'São Paulo'
-
-    const forecast = await service.getForecastForDays(city, 1)
-    expect(forecast.list).toHaveLength(1)
+    const forecast = await service.getForecastForDays(city)
+    expect(forecast.list).toHaveLength(40)
   })
 })
